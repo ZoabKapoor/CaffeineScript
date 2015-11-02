@@ -15,6 +15,7 @@ I don't believe there are any other DSLs in this domain. The closest thing I cou
 #### Language design
 
 A program in the language is going to look like a list of instructions to execute, in order. We require the language to be imperative instead of declarative because it makes a difference the order in which ingredients are added to what the final product will look/taste like. Thus, we should allow the user to control the order in which things happen. For instance, most baristas add shots of coffee to the milk in a latte, and not the other way around. When a program runs, depending on the backend attached to the language, you could get as a result:
+
 1. A physical coffee drink. (this would be ideal, but is too much work to implement for this class)
 2. A sequence of print statements corresponding to the steps taken to produce the drink.
 3. A visual rendering of the coffee drink.
@@ -46,6 +47,7 @@ Begin LATTE:
 End LATTE:
 ```
 When this program runs, the following things should happen:
+
 1. The parser parses the program into a list of rules to execute sequentially.
 2. Each rule should be parsed to extract 2 key pieces of data - the name of the ingredient used and the quantity of that ingredient to add. 
 3. Once the program is fully parsed, it will be executed by iterating over the list of rules and executing each one. 

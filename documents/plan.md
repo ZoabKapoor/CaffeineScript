@@ -1,7 +1,7 @@
-### Language evaluation
+#### Language evaluation
 
-### Implementation plan
+#### Implementation plan
 
-### Teamwork plan
+#### Teamwork plan
 
 Not applicable.

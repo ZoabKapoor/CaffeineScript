@@ -7,7 +7,7 @@ package caffeineScript.ir
 
 sealed abstract class AST
 
-case class Instruction(ingredient: Ingredient, amount: Quantity, verb: Verb) extends AST
+case class Instruction(ingredient: Ingredient, quantity: Quantity, verb: Verb) extends AST
 
 case class Ingredient(name: String)
 

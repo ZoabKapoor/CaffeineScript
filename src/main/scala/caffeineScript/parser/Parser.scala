@@ -13,8 +13,8 @@ object CaffeineScriptParser extends JavaTokenParsers with PackratParsers {
 			def program: Parser[List[Instruction]] = instr*
 
 			lazy val instr: PackratParser[Instruction] = 
-			( liquidVerb~" "~quantityLiquid~" "~liquidIngredient ^^ {case lv~" "~lq~" "~li => Instruction(li, lq, lv)} |
-          solidVerb~" "~quantitySolid~" "~solidIngredient ^^ {case sv~" "~sq~" "~si => Instruction(si,sq,sv)})       
+			( liquidVerb~quantityLiquid~liquidIngredient~";" ^^ {case lv~lq~li~";" => Instruction(li, lq, lv)} |
+          solidVerb~quantitySolid~solidIngredient~";" ^^ {case sv~sq~si~";" => Instruction(si,sq,sv)})       
 
 			lazy val liquidVerb: PackratParser[Verb] = 
 			 (liquidVerbWord ^^ {case x => Verb(x)})
@@ -23,7 +23,7 @@ object CaffeineScriptParser extends JavaTokenParsers with PackratParsers {
 			( "pour" | "add" )
 
 			lazy val quantityLiquid: PackratParser[Quantity] = 
-			(amount~" "~liquidTypename ^^ {case amt~" "~liqtypename => Quantity(liqtypename, amt)})
+			(amount~liquidTypename ^^ {case amt~liqtypename => Quantity(liqtypename, amt)})
 
 			lazy val liquidTypename: PackratParser[String] = 
 			("shots" | "oz" )
@@ -44,7 +44,7 @@ object CaffeineScriptParser extends JavaTokenParsers with PackratParsers {
 			( "add" | "sprinkle" | "scoop")
 
 			lazy val quantitySolid: PackratParser[Quantity] = 
-			(amount~" "~solidTypename ^^ {case amt~" "~soltypename => Quantity(soltypename, amt)})
+			(amount~solidTypename ^^ {case amt~soltypename => Quantity(soltypename, amt)})
 
 			lazy val solidTypename: PackratParser[String] = 
 			("spoons" | "grams")

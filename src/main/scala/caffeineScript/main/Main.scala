@@ -18,8 +18,8 @@ object Main {
 				case e: CaffeineScriptParser.NoSuccess => println(e) 
 
 				case CaffeineScriptParser.Success(instructions, _) => {
-					// error_check(ruleBuilders)
-
+          // error checking step goes here
+          
 					PrintBackend.execute(instructions)
 				}
 		}

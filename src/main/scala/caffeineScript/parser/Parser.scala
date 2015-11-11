@@ -13,47 +13,28 @@ object CaffeineScriptParser extends JavaTokenParsers with PackratParsers {
 			def program: Parser[List[Instruction]] = instr*
 
 			lazy val instr: PackratParser[Instruction] = 
-			( liquidVerb~quantityLiquid~liquidIngredient~";" ^^ {case lv~lq~li~";" => Instruction(li, lq, lv)} |
-          solidVerb~quantitySolid~solidIngredient~";" ^^ {case sv~sq~si~";" => Instruction(si,sq,sv)})       
+			( verb~quantity~ingredient~";" ^^ {case v~q~i~";" => Instruction(i, q, v)})       
 
-			lazy val liquidVerb: PackratParser[Verb] = 
-			 (liquidVerbWord ^^ {case x => Verb(x)})
+			lazy val verb: PackratParser[Verb] = 
+			 (verbWord ^^ {case x => Verb(x)})
 
-			lazy val liquidVerbWord: PackratParser[String] =
-			( "pour" | "add" )
+			lazy val verbWord: PackratParser[String] =
+			( "pour" | "add" | "sprinkle" | "scoop")
 
-			lazy val quantityLiquid: PackratParser[Quantity] = 
-			(amount~liquidTypename ^^ {case amt~liqtypename => Quantity(liqtypename, amt)})
+			lazy val quantity: PackratParser[Quantity] = 
+			(amount~typename ^^ {case amt~qtyname => Quantity(qtyname, amt)})
 
-			lazy val liquidTypename: PackratParser[String] = 
-			("shots" | "oz" )
+			lazy val typename: PackratParser[String] = 
+			("shots" | "oz" | "spoons" | "grams")
 
-			lazy val liquidIngredient: PackratParser[Ingredient] =
-			(liquidName ^^ {case liqname => Ingredient(liqname)})
+			lazy val ingredient: PackratParser[Ingredient] =
+			(name ^^ {case x => Ingredient(x)})
 
-			lazy val liquidName: PackratParser[String] = 
-			("espresso" | "milk" )
+			lazy val name: PackratParser[String] = 
+			("espresso" | "milk" | "sugar" | "cinnamon")
 
 			lazy val amount: PackratParser[Int] =
 			(wholeNumber ^^ {x => x.toInt})
-
-			lazy val solidVerb: PackratParser[Verb] = 
-			(solidVerbWord ^^ {case x => Verb(x)})
-
-			lazy val solidVerbWord: PackratParser[String] =
-			( "add" | "sprinkle" | "scoop")
-
-			lazy val quantitySolid: PackratParser[Quantity] = 
-			(amount~solidTypename ^^ {case amt~soltypename => Quantity(soltypename, amt)})
-
-			lazy val solidTypename: PackratParser[String] = 
-			("spoons" | "grams")
-
-			lazy val solidIngredient: PackratParser[Ingredient] =
-			(solidName ^^ {case solname => Ingredient(solname)})
-
-			lazy val solidName: PackratParser[String] = 
-			("sugar" | "cinnamon")
 }
 
 // add 2 shots of coffee

@@ -16,25 +16,16 @@ object CaffeineScriptParser extends JavaTokenParsers with PackratParsers {
 			( verb~quantity~ingredient~";" ^^ {case v~q~i~";" => Instruction(i, q, v)})       
 
 			lazy val verb: PackratParser[Verb] = 
-			 (verbWord ^^ {case x => Verb(x)})
-
-			lazy val verbWord: PackratParser[String] =
-			( "pour" | "add" | "sprinkle" | "scoop")
+			 (ident ^^ {case x => Verb(x)})
 
 			lazy val quantity: PackratParser[Quantity] = 
-			(amount~typename ^^ {case amt~qtyname => Quantity(qtyname, amt)})
-
-			lazy val typename: PackratParser[String] = 
-			("shots" | "oz" | "spoons" | "grams")
+			(amount~ident ^^ {case amt~qtyname => Quantity(qtyname, amt)})
 
 			lazy val ingredient: PackratParser[Ingredient] =
-			(name ^^ {case x => Ingredient(x)})
+			(ident ^^ {case x => Ingredient(x)})
 
-			lazy val name: PackratParser[String] = 
-			("espresso" | "milk" | "sugar" | "cinnamon")
-
-			lazy val amount: PackratParser[Int] =
-			(wholeNumber ^^ {x => x.toInt})
+			lazy val amount: PackratParser[Double] =
+			(floatingPointNumber ^^ {x => x.toDouble})
 }
 
 // add 2 shots of coffee

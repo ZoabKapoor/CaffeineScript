@@ -7,9 +7,9 @@ Welcome to the CaffeineScript programming language; a language to precisely spec
 ### How to write a program
 
 Lines of code in CaffeineScript have the following form:
-<verb> <quantity> <ingredient>; 
-where a verb is any English verb (describing how to add the ingredient in question), <quantity> is 
-a number followed by a word to specify how much of the ingredient to add, and <ingredient> is the name of 
+\<verb\> \<quantity\> \<ingredient\>; 
+where \<verb\> is any English verb (describing how to add the ingredient in question), \<quantity\> is 
+a number followed by a word to specify how much of the ingredient to add, and \<ingredient\> is the name of 
 the ingredient. For example, in the line `add 2 shots of espresso`, `add` is the verb, `2 shots` is the quantity, and
 `espresso is the ingredient`.
 A program in CaffieneScript is simply a sequence of lines of code!

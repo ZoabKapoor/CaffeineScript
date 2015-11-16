@@ -16,5 +16,5 @@ A program in CaffieneScript is simply a sequence of lines of code!
 
 ### How to run a program
 
-You can run a program by typing the following into your terminal (when located in the top level directory of the CaffeineScript project) `sbt run "project caffeinescript" "run path/to/file"` where `path/to/file` is the path to the script you wish to run.
+You can run a program by typing the following into your terminal (when located in the top level directory of the CaffeineScript project) `sbt "project caffeinescript" "run path/to/file"` where `path/to/file` is the path to the script you wish to run.
 

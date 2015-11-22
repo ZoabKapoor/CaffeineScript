@@ -8,7 +8,7 @@ import caffeineScript.ir._
 package object PrintBackend {
   def execute(program: List[Instruction]) = {program.foreach { x => executeInstruction(x)}}
   
-  def executeInstruction(instr: Instruction) = {
+  def executeInstruction(instr: Instruction): Unit = {
       printVerb(instr.verb)
       printQty(instr.quantity)
       printIngr(instr.ingredient) 

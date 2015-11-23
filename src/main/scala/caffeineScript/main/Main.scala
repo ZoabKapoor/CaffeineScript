@@ -17,10 +17,10 @@ object Main {
 				program match {
 				case e: CaffeineScriptParser.NoSuccess => println(e) 
 
-				case CaffeineScriptParser.Success(instructions, _) => {
+				case CaffeineScriptParser.Success(result, _) => {
           // error checking step goes here
           
-					PrintBackend.execute(instructions)
+					PrintBackend.execute(result)
 				}
 		}
   }

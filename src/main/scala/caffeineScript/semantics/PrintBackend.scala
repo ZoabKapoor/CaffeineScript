@@ -6,7 +6,7 @@ import caffeineScript.ir._
  * @author Zoab
  */
 package object PrintBackend {
-  def execute(program: List[Instruction]) = {program.foreach { x => executeInstruction(x)}}
+  def execute(program: Recipe) = {program.body.foreach { x => executeInstruction(x)}}
   
   def executeInstruction(instr: Instruction): Unit = {
       printVerb(instr.verb)

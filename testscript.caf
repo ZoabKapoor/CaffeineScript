@@ -1,4 +1,6 @@
-add 4 shots @ espresso;
-pour 3 oz @ chocolate milk;
-scoop 2 spoons @ sugar;
-sprinkle 10 grams @ cinnamon;
+LATTE {
+	add 4 shots @ espresso;
+	pour 3 oz @ chocolate milk;
+	scoop 2 spoons @ sugar;
+	sprinkle 10 grams @ cinnamon;
+	} 

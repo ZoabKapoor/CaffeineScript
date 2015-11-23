@@ -10,23 +10,29 @@ object CaffeineScriptParser extends JavaTokenParsers with PackratParsers {
   
   val LINE_TERMINATOR = ";"
 
-	def apply(s: String): ParseResult[List[Instruction]] = parseAll(program,s)
+	def apply(s: String): ParseResult[Recipe] = parseAll(program,s)
 
-			def program: Parser[List[Instruction]] = instr*
+	lazy val program: Parser[Recipe] = 
+	( recipeName~"{"~recipeBody~"}" ^^ {case name~"{"~body~"}" => Recipe(name,body)})   
 
-			lazy val instr: PackratParser[Instruction] = 
-			( verb~quantity~"@"~ingredient~LINE_TERMINATOR ^^ {case v~q~"@"~i~LINE_TERMINATOR => Instruction(i, q, v)})       
+	lazy val recipeName: Parser[String] =
+	( """([A-Z])+""".r ^^ {case x => x})
+  
+	lazy val recipeBody: Parser[List[Instruction]] = instr*
 
-			lazy val verb: PackratParser[Verb] = 
-			 ("""([a-z])+""".r ^^ {case x => Verb(x)})
+	lazy val instr: PackratParser[Instruction] = 
+	( verb~quantity~"@"~ingredient~LINE_TERMINATOR ^^ {case v~q~"@"~i~LINE_TERMINATOR => Instruction(i, q, v)})       
 
-			lazy val quantity: PackratParser[Quantity] = 
-			(amount~"""\w+""".r ^^ {case amt~qtyname => Quantity(qtyname, amt)})
+	lazy val verb: PackratParser[Verb] = 
+	("""([a-z])+""".r ^^ {case x => Verb(x)})
 
-			lazy val ingredient: PackratParser[Ingredient] =
-      // We allow ingredients to contain multiple words, but not verbs
-			("""([a-z]| )+""".r ^^ {case x => Ingredient(x)})
+	lazy val quantity: PackratParser[Quantity] = 
+	(amount~"""\w+""".r ^^ {case amt~qtyname => Quantity(qtyname, amt)})
 
-			lazy val amount: PackratParser[Double] =
-			(floatingPointNumber ^^ {x => x.toDouble})
+	lazy val ingredient: PackratParser[Ingredient] =
+	// We allow ingredients to contain multiple words, but not verbs
+	("""([a-z]| )+""".r ^^ {case x => Ingredient(x)})
+
+	lazy val amount: PackratParser[Double] =
+	(floatingPointNumber ^^ {x => x.toDouble})
 }

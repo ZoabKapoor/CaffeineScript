@@ -27,7 +27,13 @@ object CaffeineScriptParser extends JavaTokenParsers with PackratParsers {
   lazy val instructions: Parser[List[Instruction]] = instr*
   
 	lazy val instr: PackratParser[Instruction] = 
-	( verb~quantity~"@"~ingredient~LINE_TERMINATOR ^^ {case v~q~"@"~i~LINE_TERMINATOR => Instruction(i, q, v)})       
+    (instrBody~LINE_TERMINATOR ^^ {case body~LINE_TERMINATOR => body})
+  
+  lazy val instrBody: PackratParser[Instruction] =  
+	( "make"~recipeName ^^ {case "make"~name => MakeInstruction(name)} |
+		"remove"~ingredient ^^ {case "remove"~ingredient => RemoveInstruction(ingredient)} |
+    "swap"~ingredient~","~ingredient ^^ {case "swap"~x~","~y => SwapInstruction(x,y)} |
+		verb~quantity~"@"~ingredient ^^ {case v~q~"@"~i => RegularInstruction(i, q, v)})       
 
 	lazy val verb: PackratParser[Verb] = 
   // verbs cannot contain multiple words

@@ -9,6 +9,13 @@ package object PrintBackend {
   def execute(program: Program) = {program.body.foreach { x => executeInstruction(x)}}
   
   def executeInstruction(instr: Instruction): Unit = {
+    instr match {
+      case x: RegularInstruction => executeRegularInstruction(x)
+      case default =>
+    }
+  }
+  
+  def executeRegularInstruction(instr: RegularInstruction): Unit = {
       printVerb(instr.verb)
       printQty(instr.quantity)
       printIngr(instr.ingredient) 

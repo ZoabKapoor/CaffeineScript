@@ -5,13 +5,20 @@ package caffeineScript.ir
  */
 
 
-sealed abstract class AST
 
-case class Program(header: List[Recipe], body: List[Instruction]) extends AST
+case class Program(header: List[Recipe], body: List[Instruction]) 
 
-case class Recipe(name: String, body: List[Instruction]) extends AST
+case class Recipe(name: String, body: List[Instruction]) 
 
-case class Instruction(ingredient: Ingredient, quantity: Quantity, verb: Verb) extends AST
+sealed abstract class Instruction
+
+case class RegularInstruction(ingredient: Ingredient, quantity: Quantity, verb: Verb) extends Instruction
+
+case class RemoveInstruction(ingredient: Ingredient) extends Instruction
+
+case class SwapInstruction(thing1: Ingredient, thing2: Ingredient) extends Instruction
+
+case class MakeInstruction(recipeName: String) extends Instruction
 
 case class Ingredient(name: String)
 

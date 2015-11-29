@@ -20,7 +20,12 @@ case class SwapInstruction(thing1: Ingredient, thing2: Ingredient) extends Instr
 
 case class MakeInstruction(recipeName: String) extends Instruction
 
-case class Ingredient(name: String)
+case class Ingredient(name: String) {
+  override def equals (o: Any) = o match {
+    case that: Ingredient => that.name.equals(this.name)
+    case _ => false
+  }
+}
 
 case class Quantity(typename: String, amount: Double)
 

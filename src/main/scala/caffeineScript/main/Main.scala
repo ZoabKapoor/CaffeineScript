@@ -1,7 +1,7 @@
 package caffeineScript.main
 
 import caffeineScript.parser._
-import caffeineScript.semantics.PrintBackend
+import caffeineScript.semantics._
 
 /**
  * @author Zoab
@@ -18,6 +18,8 @@ object Main {
 				case e: CaffeineScriptParser.NoSuccess => println(e) 
 
 				case CaffeineScriptParser.Success(result, _) => {
+          
+          val instructions = Transformer.transform(result);
           // error checking step goes here
           
 					PrintBackend.execute(result)

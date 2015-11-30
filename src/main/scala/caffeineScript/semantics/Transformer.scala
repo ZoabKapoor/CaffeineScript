@@ -24,15 +24,15 @@ package object Transformer {
           case reg: RegularInstruction => result += reg
           // iterate over the current result and remove every instruction whose ingredient 
           // is equal to the remove instruction's ingredient
-          case rem: RemoveInstruction => result.foreach { x => if (x.ingredient.equals(rem.ingredient)) Nil}
+          case rem: RemoveInstruction => result = result.map { x => if (x.ingredient.equals(rem.ingredient)) x else x}
           case make: MakeInstruction => {
-            recipes.foreach { x => if (x.name.equals(make.recipeName)) result = result ++ transformInstructions(x.body) 
+            recipes.foreach { x => if (x.name.equals(make.recipeName)) result = result ++ transformInstructions(x.body)
               else throw new IllegalArgumentException("Make instruction references recipe: " + make.recipeName + " which is not defined!") }
           }
           // iterate over the current result and transform each instruction whose ingredient is equal to the swap
           // instruction's thing1 to an instruction whose ingredient is equal to the swap instruction's thing2
-          case swap: SwapInstruction => result.foreach { x => if (x.ingredient.equals(swap.thing1)) 
-            RegularInstruction(swap.thing2 , x.quantity , x.verb)}
+          case swap: SubstInstruction => result = result.map { x => if (x.ingredient.equals(swap.toRemove)) 
+            RegularInstruction(swap.toAdd , x.quantity , x.verb) else x}
           }
         }
     result.toList

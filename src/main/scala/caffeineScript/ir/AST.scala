@@ -16,7 +16,7 @@ case class RegularInstruction(ingredient: Ingredient, quantity: Quantity, verb: 
 
 case class RemoveInstruction(ingredient: Ingredient) extends Instruction
 
-case class SwapInstruction(thing1: Ingredient, thing2: Ingredient) extends Instruction
+case class SubstInstruction(toAdd: Ingredient, toRemove: Ingredient) extends Instruction
 
 case class MakeInstruction(recipeName: String) extends Instruction
 

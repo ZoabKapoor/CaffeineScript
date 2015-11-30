@@ -22,7 +22,7 @@ object Main {
           val instructions = Transformer.transform(result);
           // error checking step goes here
           
-					PrintBackend.execute(result)
+					PrintBackend.execute(instructions)
 				}
 		}
   }

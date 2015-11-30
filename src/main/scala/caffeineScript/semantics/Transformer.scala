@@ -24,7 +24,7 @@ package object Transformer {
           case reg: RegularInstruction => result += reg
           // iterate over the current result and remove every instruction whose ingredient 
           // is equal to the remove instruction's ingredient
-          case rem: RemoveInstruction => result = result.flatMap { x => if (x.ingredient.equals(rem.ingredient)) Nil else List{x}}
+          case rem: RemoveInstruction => result = result.filter { x => !(x.ingredient.equals(rem.ingredient))}
           case make: MakeInstruction => {
             recipes.foreach { x => if (x.name.equals(make.recipeName)) result = result ++ transformInstructions(x.body)
               else throw new IllegalArgumentException("Make instruction references recipe: " + make.recipeName + " which is not defined!") }

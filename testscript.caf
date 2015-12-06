@@ -1,11 +1,13 @@
 {
+    MOCHA {
+        make LATTE;
+        add 2 scoops @ chocolate powder;
+    }
+
     LATTE {
-        add 4 shots @ espresso;
-        pour 3 oz @ chocolate milk;
-        scoop 2 spoons @ sugar;
+        make MOCHA;
+        remove chocolate powder;
     }
 }
 
 make LATTE;
-remove chocolate milk;
-swap cinnamon drops -> sugar;

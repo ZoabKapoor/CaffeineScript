@@ -26,8 +26,7 @@ package object Transformer {
           // is equal to the remove instruction's ingredient
           case rem: RemoveInstruction => result = result.filter { x => !(x.ingredient.equals(rem.ingredient))}
           case make: MakeInstruction => {
-            recipes.foreach { x => if (x.name.equals(make.recipeName)) result = result ++ transformInstructions(x.body)
-              else throw new IllegalArgumentException("Make instruction references recipe: " + make.recipeName + " which is not defined!") }
+            recipes.foreach { x => if (x.name.equals(make.recipeName)) result = result ++ transformInstructions(x.body) }
           }
           // iterate over the current result and transform each instruction whose ingredient is equal to the swap
           // instruction's thing1 to an instruction whose ingredient is equal to the swap instruction's thing2

@@ -8,10 +8,10 @@ import scala.collection.mutable._
  */
 package object Transformer {
   
-  var recipes: List[Recipe] = Nil
+  val recipes: HashMap[String, List[Instruction]] = new HashMap[String,List[Instruction]]()
   
   def transform(program: Program): List[RegularInstruction] = {
-    recipes = program.header
+    program.header.foreach { x => recipes.put(x.name, x.body) }
     transformInstructions(program.body)
   }
   
@@ -25,8 +25,9 @@ package object Transformer {
           // iterate over the current result and remove every instruction whose ingredient 
           // is equal to the remove instruction's ingredient
           case rem: RemoveInstruction => result = result.filter { x => !(x.ingredient.equals(rem.ingredient))}
-          case make: MakeInstruction => {
-            recipes.foreach { x => if (x.name.equals(make.recipeName)) result = result ++ transformInstructions(x.body) }
+          case make: MakeInstruction => { if (recipes.contains(make.recipeName)) 
+        	  result = result ++ transformInstructions(recipes.getOrElse(make.recipeName, null))
+        	  else throw new IllegalArgumentException("Recipe with name: " + make.recipeName + " is not defined!")
           }
           // iterate over the current result and transform each instruction whose ingredient is equal to the swap
           // instruction's thing1 to an instruction whose ingredient is equal to the swap instruction's thing2

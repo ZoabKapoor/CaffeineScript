@@ -11,7 +11,8 @@ package object Transformer {
   val recipes: HashMap[String, List[Instruction]] = new HashMap[String,List[Instruction]]()
   
   def transform(program: Program): List[RegularInstruction] = {
-    program.header.foreach { x => recipes.put(x.name, x.body) }
+    program.header.foreach { x => if (!recipes.contains(x.name)) recipes.put(x.name, x.body) 
+      else throw new IllegalArgumentException("Recipe with name: " + x.name + " is defined multiple times!") }
     transformInstructions(program.body)
   }
   

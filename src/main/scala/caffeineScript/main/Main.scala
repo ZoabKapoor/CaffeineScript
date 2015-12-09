@@ -20,7 +20,6 @@ object Main {
 				case CaffeineScriptParser.Success(result, _) => {
           
           val instructions = Transformer.transform(result);
-          // error checking step goes here
           
 					PrintBackend.execute(instructions)
 				}

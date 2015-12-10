@@ -25,11 +25,11 @@ RECIPENAME {
   recipebody
 }
 ```
-where the recipe name must be in all capital letters, and the body is a series of instructions of the 4 types mentioned above. 
+where the recipe name must be in all capital letters, and the body is a series of instructions of the 4 types mentioned above. A recipe should only be defined once in the header - creating 2 recipes with the same name will lead to undefined behaviour. 
 
-This is the syntax of these 4 types of instructions:
+Here's the syntax of the 4 basic types of instructions:
   - Regular instruction : `<verb> <quantity> @ <ingredient>`. For example, `scoop 2 spoons @ sugar;`.
-  - Make instruction : `make <RECIPENAME>`. For example, `make LATTE`.
+  - Make instruction : `make <RECIPENAME>`. For example, `make LATTE`. If you have a `make <RECIPE>` in your program, `RECIPE` should be defined in the header of the program.
   - Swap instruction : `swap <ingredient1> -> <ingredient2>`. For example, `swap water -> espresso;`. This substitues in water for espresso for every instance of espresso that's currently in the drink.
   - Remove instruction : `remove <ingredient>`. This removes all instances of the ingredient specified that have been added before this line.
 
@@ -42,3 +42,84 @@ the ingredient. For example, in the line `add 2 shots of espresso`, `add` is the
 
 You'll need to have sbt and scala installed for this. First, clone this repository so you have the source code. Then, you can run a program by typing the following into your terminal (when located in the top level directory of the CaffeineScript project) `sbt "project caffeinescript" "run path/to/file"` where `path/to/file` is the path to the script you wish to run. Alternatively, I've included a simple Makefile that runs testscript.caf, so if you're writing your program in that file you can run it by typing `make`.
 
+## Example valid program
+
+### Input
+
+```
+{
+    MOCHA {
+        make LATTE;
+        add 2 scoops @ chocolate powder;
+    }
+
+    LATTE {
+        add 4 shots @ espresso;
+        pour 3 oz @ milk;
+        scoop 2 spoons @ sugar;
+    }
+}
+
+make MOCHA;
+swap water -> espresso;
+remove milk;
+```
+
+### Output
+
+```
+adding 4.0 shots of water 
+scooping 2.0 spoons of sugar
+adding 2.0 scoops of chocolate powder
+```
+
+## Example invalid program
+
+### Input
+
+```
+{
+    MOCHA {
+        make LATTE;
+        add 2 scoops @ chocolate powder;
+    }
+
+    LATTE {
+        add 4 shots @ espresso;
+        pour 3 oz @ milk;
+        scoop 2 spoons @ sugar;
+    }
+
+    LATTE {
+        add 4 shots @ espresso;
+        pour 3 oz @ milk;
+        scoop 2 spoons @ sugar;
+    }
+}
+
+make MOCHA;
+```
+
+### Output
+
+```
+[error] (run-main-0) java.lang.IllegalArgumentException: Recipe with name: LATTE is defined multiple times!
+java.lang.IllegalArgumentException: Recipe with name: LATTE is defined multiple times!
+	at caffeineScript.semantics.Transformer.package$$anonfun$transform$1.apply(Transformer.scala:15)
+	at caffeineScript.semantics.Transformer.package$$anonfun$transform$1.apply(Transformer.scala:14)
+	at scala.collection.immutable.List.foreach(List.scala:381)
+	at caffeineScript.semantics.Transformer.package$.transform(Transformer.scala:14)
+	at caffeineScript.main.Main$.main(Main.scala:22)
+	at caffeineScript.main.Main.main(Main.scala)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+[trace] Stack trace suppressed: run last compile:run for the full output.
+java.lang.RuntimeException: Nonzero exit code: 1
+	at scala.sys.package$.error(package.scala:27)
+[trace] Stack trace suppressed: run last compile:run for the full output.
+[error] (compile:run) Nonzero exit code: 1
+[error] Total time: 1 s, completed Dec 9, 2015 8:43:54 PM
+make: *** [all] Error 1
+```
